@@ -10,6 +10,7 @@ running = True
 
 snake = Snake(20, 20)
 apple = Apple(20,20)
+snake.where_is_apple(apple)
 walls = [
     pygame.Rect(0, 0, 500, 20),
     pygame.Rect(0, 480, 500, 20),
@@ -23,23 +24,25 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                # if snake.direction == "right":
-                #     running = False
+                if snake.direction == "right":
+                    running = False
                 snake.direction = "left"
             if event.key == pygame.K_RIGHT:
-                # if snake.direction == "left":
-                #     running = False
+                if snake.direction == "left":
+                    running = False
                 snake.direction = "right"
             if event.key == pygame.K_UP:
-                # if snake.direction == "down":
-                #     running = False
+                if snake.direction == "down":
+                    running = False
                 snake.direction = "up"
             if event.key == pygame.K_DOWN:
-                # if snake.direction == "up":
-                #     running = False
+                if snake.direction == "up":
+                    running = False
                 snake.direction = "down"
         if event.type == pygame.QUIT:
             running = False
+
+    snake.where_is_apple(apple)        
     snake.look()
     snake.move(DT)
 
@@ -53,28 +56,24 @@ while running:
         snake.grow()
     elif apple.collidelist(snake.body) > -1:
         apple.move_random()
-    print(snake.center, apple.center,snake.x-apple.x, snake.y-apple.y)
-    rect_list = snake.collidelistall(snake.body)
-    if len(rect_list) > 0:
-        if(rect_list[0] == 1):
-            if snake.length <= 2:
-                print("You eat apple")
-            else:
-                print("You died, reverse direction")
-        elif(rect_list[-1] == snake.length - 2):
-            print("You eat apple")
-        else:
-            print("You died",rect_list,snake.length, len(snake.body))
 
-    
-    # RENDER YOUR GAME HERE
+    body_collide = snake.collidelistall(snake.body)
+    if len(body_collide) > 0 and len(snake.body) > 1:
+        running = False
+
+    # RENDER GAME HERE
     for wall in walls:
         pygame.draw.rect(screen, "orange", wall)
     pygame.draw.rect(screen, "red",apple)
     pygame.draw.rect(screen, "white",snake)
     if snake.body != None:
-        for element in snake.body:
-            pygame.draw.rect(screen, "white",element)
+        for i,element in enumerate(snake.body):
+            if i == 0:
+                pygame.draw.rect(screen, "yellow", element)
+            elif i == len(snake.body) - 1:
+                pygame.draw.rect(screen, "orange", element)
+            else:
+                pygame.draw.rect(screen, "white",element)
 
     for direction, rect in snake.what_i_see.items():
             if rect.collidelist(walls) > -1:
@@ -92,8 +91,6 @@ while running:
     text_surface = text_font.render(text, True, "white")
     screen.blit(text_surface, (15, 15))
 
-    # flip() the display to put your work on screen
     pygame.display.flip()
-    # pygame.display.update()
 
 pygame.quit()
