@@ -53,6 +53,7 @@ class Snake(Rect):
             "upper_right": Rect(self.centerx + PIXEL_SIZE, self.centery - PIXEL_SIZE,5,5),
             "lower_right": Rect(self.centerx + PIXEL_SIZE, self.centery + PIXEL_SIZE,5,5),
         }
+        return self.what_i_see
         
 
     def grow(self):
@@ -85,4 +86,6 @@ class Snake(Rect):
         else:
             direction += " right"
         
-        print(direction, x_diff, y_diff)
+        return {"direction_to_go" : direction, 
+                "position_diff" : (x_diff, y_diff)
+                }
