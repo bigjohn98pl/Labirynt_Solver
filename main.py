@@ -8,6 +8,7 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode(WINDOW_SIZE)
 running = True
 
+game_state = {"position_and_direction": {}, "surroundings": {}}
 snake = Snake(20, 20)
 apple = Apple(20,20)
 snake.where_is_apple(apple)
@@ -42,7 +43,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    snake.where_is_apple(apple)        
+    game_state["position_and_direction"] = snake.where_is_apple(apple)        
     snake.look()
     snake.move(DT)
 
@@ -78,12 +79,16 @@ while running:
     for direction, rect in snake.what_i_see.items():
             if rect.collidelist(walls) > -1:
                 pygame.draw.rect(screen, "red", rect)
+                game_state["surroundings"][direction] = "wall"
             elif rect.collidelist(snake.body) > -1:
                 pygame.draw.rect(screen, "blue", rect)
+                game_state["surroundings"][direction] = "body"
             elif rect.colliderect(apple):
                 pygame.draw.rect(screen, "yellow", rect)
+                game_state["surroundings"][direction] = "apple"
             else:
                 pygame.draw.rect(screen, "green", rect)
+                game_state["surroundings"][direction] = "    "
             
 
     text = str(f"Score: {snake.score}")
@@ -92,5 +97,7 @@ while running:
     screen.blit(text_surface, (15, 15))
 
     pygame.display.flip()
+
+    print(game_state["position_and_direction"])
 
 pygame.quit()
