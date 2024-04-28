@@ -90,7 +90,3 @@ num_actions = 4
 Q = np.zeros((num_states, num_actions))
 
 td_errors = []
-epsilone_change = [100,200,300,400,500,600,700,800,900,1000]
-epsilon = 0.1  # Stopień eksploracji
-alpha = 0.4    # Współczynnik uczenia
-gamma = 0.9    # Współczynnik dyskontujący

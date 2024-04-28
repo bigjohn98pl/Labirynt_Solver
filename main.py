@@ -183,13 +183,11 @@ def run_q_learning():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-            # if EPISODE in q.epsilone_change:
-            #     q.epsilon -= 0.01
-            action_index = q.choose_action(state_index, q.epsilon)
+            action_index = q.choose_action(state_index, EPSILONE)
             next_state, reward, game_over = game_step(DT,state,action_index)
             total_reward += reward
             next_state_index = q.state_to_index(next_state)
-            q.update_Q(state_index, action_index, reward, next_state_index, q.alpha, q.gamma)
+            q.update_Q(state_index, action_index, reward, next_state_index, ALPHA, GAMMA)
             state = next_state
             state_index = next_state_index
         total_rewards.append(total_reward)

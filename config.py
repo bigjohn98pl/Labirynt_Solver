@@ -30,3 +30,7 @@ ACTION_COUNT = {
 Q_TABLE_MEANS = []
 MAX_SCORE = 0.0
 MAX_EPISODE = 0
+
+EPSILONE = 0.1  # exploration rate
+ALPHA = 0.4    # learning rate
+GAMMA = 0.9    # discount rate
